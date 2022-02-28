@@ -7,11 +7,12 @@
     </div>
 
     <div v-else>
-
-
       <div v-for="f in flights">
-        <p>{{ f.flight_number }}</p>
-
+        <p>plane name: {{f.airplane.name}}</p>
+        <p>flight number: {{ f.flight_number }}</p>
+         <p>date & time: {{ f.departure_date }}</p>
+         <p>origin: {{ f.origin }}</p>
+         <p>destination: {{ f.destination }}</p>
       </div>
 
     </div>
