@@ -7,7 +7,7 @@
     </div>
 
     <div v-else>
-      <div v-for="f in flights">
+      <div v-for="f in flights" class="results">
         <p>plane name: {{f.airplane.name}}</p>
         <p>flight number: {{ f.flight_number }}</p>
          <p>date & time: {{ f.departure_date }}</p>
@@ -63,5 +63,12 @@ export default {
 </script>
 
 <style>
+.results{
+  border: 2px solid red;
+  display: inline-block;
+  text-align: left;
+  margin: 20px;
+  padding: 10px;
+}
 
 </style>
