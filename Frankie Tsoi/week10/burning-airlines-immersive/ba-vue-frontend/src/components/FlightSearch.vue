@@ -43,6 +43,7 @@ export default {
   methods: {
     submitSearch(){
       console.log('Submitted');
+      // console.log('$router:', this.$router);
       this.$router.push({
         name: 'SearchResults',
         params :{
@@ -55,6 +56,6 @@ export default {
 }//export
 </script>
 
-<style scoped>
+<style>
 
 </style>

@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <h1>BURNING AIRLINES</h1>
+    <h4 @click="gotoHome">HOME</h4>
+    
     <router-view/>
   </div>
 </template>
@@ -8,7 +10,9 @@
 <script>
 export default {
   name: 'App'
+
 }
+
 </script>
 
 <style>

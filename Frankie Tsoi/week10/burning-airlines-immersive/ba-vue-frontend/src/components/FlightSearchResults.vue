@@ -1,74 +1,84 @@
 <template>
   <div>
-    <h2>Search Results from {{origin}} to {{destination}}</h2>
+    <h2>Search Results from {{ origin }} to {{ destination }}</h2>
 
-    <div v-if='loading' class="load">
-      <p>Loading flight results......</p>
+    <div v-if="loading" class="load">
+      <p>Loading flight results....</p>
     </div>
 
     <div v-else>
-      <div v-for="f in flights" class="results">
-        <p>plane name: {{f.airplane.name}}</p>
-        <p>flight number: {{ f.flight_number }}</p>
-         <p>date & time: {{ f.departure_date }}</p>
-         <p>origin: {{ f.origin }}</p>
-         <p>destination: {{ f.destination }}</p>
-      </div>
 
-    </div>
+      <div class="results" v-for="flight in flights">
+        <div @click="gotoFlight(flight.id)">
+          <!-- fix the hideous format of these dates!!! npm luxon -->
+          {{ flight.departure_date }}:
+          {{ flight.flight_number }}
+          -
+          {{ flight.airplane.name  }}
+        </div>
+      </div><!-- v-for loop closing div tag -->
 
-    </div>
-    
+    </div><!-- v-else (loading == false) div closing tag -->
+
+
+  </div>
 </template>
 
 <script>
+
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/'
+const API_BASE_URL = 'http://localhost:3000/';
 
 export default {
   name: 'FlightSearchResults',
   props: ['origin', 'destination'],
   data(){
-    return{
-      flight:[],
+    return {
+      // state goes here
+      flights: [],
       loading: true,
       error: null
+    };
+  }, // data()
 
-    }; //return
-  },//data
-  
-    async mounted(){
-      console.log('component mounted', this.origin, this.destination);
+  // This is like React's componentDidMount() - runs once when the component
+  // is added to the DOM
+  async mounted(){
+    console.log('Component mounted', this.origin, this.destination);
 
-      try{
-        const url = `${API_BASE_URL}/flights/search/${this.origin}/${this.destination}`
-        const res = await axios.get(url);
-        this.flights = res.data;
-        this.loading = false;
-        console.log('response', res.data)
-      } catch(err){
-        console.log('Error loading flight search results', err);
-        this.error = error;
-      }
+    try {
+      const url = `${API_BASE_URL}flights/search/${this.origin}/${this.destination}`;
+      const res = await axios.get(url);
+      this.flights = res.data;  // save AJAX response into Vue state
+      this.loading = false;
+      console.log('response', res.data);
+    } catch( err ){
+      console.log('Error loading flight search results', err);
+      this.error = error;
+    }
 
+  }, // mounted()
 
-    },//mounted
+  methods: {
+    gotoFlight(id){
+      console.log('gotoFlight()', id);
+      this.$router.push({
+        name: 'FlightDetails',
+        params: { id: id }
+      });
+    }, // gotoFlight()
+  }, // methods
 
-    methods: {
-
-    }//method
- 
-}//export defaults
+}; // export default object
 </script>
 
-<style>
-.results{
-  border: 2px solid red;
-  display: inline-block;
-  text-align: left;
-  margin: 20px;
-  padding: 10px;
-}
-
+<style scoped>
+  .results div {
+    cursor: pointer;
+  }
+  .results div:hover{
+    text-decoration: underline;
+    font-weight: bold;
+  }
 </style>

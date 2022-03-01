@@ -90,7 +90,7 @@ export default {
   data () {
     // Here is like "state" object in REACT
     return {
-      msg: 'Welcome User'
+      msg: 'Welcome to Your Vue.js App'
     }
   }, //end of data
   methods: {
