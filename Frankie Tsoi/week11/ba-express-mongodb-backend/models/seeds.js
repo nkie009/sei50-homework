@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 
 const Flight = require('./Flight');
 
+const User = require('./User')
+
 mongoose.connect('mongodb://localhost/ba');
 
 const db = mongoose.connection;
@@ -33,7 +35,6 @@ db.once('open', async () => {
         airplane: {
           name: '737 Max',
           rows: 20,
-          
           cols: 6
         }, //nested data of an ID (association)
         reservation: [
@@ -60,12 +61,37 @@ db.once('open', async () => {
         ], //reservation
       },// end of flight no.2
   
+      // console.log('Create flights:', results);
     ]);
-    // console.log('Create flights:', results);
 
   } catch(err){
     console.log('Error creating flights:', err);
   } 
+
+  await User.deleteMany();
+  try{
+   const createUser =  await User.create([
+      {
+          name: 'Bob',
+          email: 'bob@ga.co',
+          pwd: 'chicken',
+        // end of user 1
+      },
+
+    ]);
+    console.log(`Success! Added ${createUser.insertedCount} Users`);
+  
+  } catch(err){ //try user
+      console.log('Error creating users:', err);
+  }
+
+  try{
+    const users = await User.find();
+    console.log('users:', users);
+  } catch (err){
+    console.log('Error finding users:', err);
+    // process.exit(1);
+  }
 
   try{
     const flights = await Flight.find();
@@ -74,6 +100,7 @@ db.once('open', async () => {
     console.log('Error finding flights:', err);
     process.exit(1);
   }
+
 
   process.exit(0);// all good, quit program
 
